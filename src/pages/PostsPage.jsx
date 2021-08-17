@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSortedAndSearchedList } from '../hooks/useList'
 import { PostForm } from "../components/postForm/PostForm";
 import { PostFilter } from "../components/postFilter/PostFilter";
@@ -10,6 +10,7 @@ import { useFetching } from '../hooks/useFetching';
 import { getPagesCount } from '../utils/getPagesSCount';
 import { MyPagination } from '../components/UI/myPagination/MyPagination';
 import { PostsList } from '../components/postsList/PostsList';
+import { useObserver } from '../hooks/useObserver';
 
 export const PostsPage = () => {
   const [posts, setPosts] = useState([]);
@@ -19,18 +20,22 @@ export const PostsPage = () => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1)
 
+  const lastPost = useRef() 
+
   const sortedAndSearchedPosts = useSortedAndSearchedList(posts, filter.sort, filter.query)
   const [fetchPosts, isPostLoading, postError] = useFetching(async (limit, page) => {
     const response = await PostService.getAllPosts(limit, page);
-    setPosts(response.data)
+    setPosts([...posts,...response.data])
     const totalCount = response.headers["x-total-count"]
     setTotalPages(getPagesCount(totalCount, limit))
-    console.log(posts)
   })
-
+  useObserver(lastPost, page < totalPages, isPostLoading, () => {
+    setPage(page + 1);
+})
   useEffect(() => {
     fetchPosts(limit, page)
-  }, [limit]);
+  }, [page, limit]);
+  
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -41,7 +46,6 @@ export const PostsPage = () => {
   }
   const changePage = (page) => {
     setPage(page)
-    fetchPosts(limit, page)
   }
 
   return (
@@ -62,10 +66,14 @@ export const PostsPage = () => {
       />
 
       {postError && <h2 style={{ textAlign: 'center' }}>Произошла ошибка: {postError}</h2>}
-      {isPostLoading
-        ? <div className='loaderWrapper'><MyLoader /></div>
-        : <PostsList removePost={removePost} posts={sortedAndSearchedPosts} title='Список постов №1' />
+      <PostsList removePost={removePost} posts={sortedAndSearchedPosts} title='Список постов №1' />
+      <div ref={lastPost}></div>
+      {isPostLoading &&
+        <div className='loaderWrapper'>
+          <MyLoader />
+        </div>
       }
+      
       <MyPagination
         page={page}
         setPage={setPage}
