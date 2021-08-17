@@ -1,8 +1,8 @@
 import s from './posts.module.css'
-import { PostItem } from './PostItem/PostItem'
+import { PostItem } from '../PostItem/PostItem'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-export const Posts = ({ posts, title, removePost }) => {
+export const PostsList = ({ posts, title, removePost }) => {
     if (!posts.length) {
         return (
             <h2 style={{textAlign:'center'}}>Посты не найдены</h2>

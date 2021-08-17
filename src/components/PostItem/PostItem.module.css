@@ -9,10 +9,13 @@
 }
 
 .post__btn>button{
-    width: 150px;
-    height: 60px;
+    display: flex;
+    justify-content: center;
+    flex-basis: 20%;
+    min-width: 150px;
 }
 .post__content{
     text-align: justify;
+    flex-basis: 80%;
     font-size: 20px;
 }
