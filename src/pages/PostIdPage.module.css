@@ -1,0 +1,40 @@
+.wrapper{
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.comments_wrapper{
+    margin-top: 20px;
+}
+
+.comments_item{
+   border: 1px solid teal;
+   border-collapse: collapse;
+   font-size: 20px;
+   line-height: 1.5;
+   text-align: justify;
+}
+
+.comments_item{
+    text-indent: 20px;
+}
+
+.comments_item__email{
+    font-weight: bold;
+    font-style: italic;
+}
+
+.post_item{
+    font-size: 26px;
+    text-indent: 20px;
+    text-align: justify;
+}
+
+.post_item__title{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.post_item__body{
+    
+}

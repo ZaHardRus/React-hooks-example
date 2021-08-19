@@ -13,29 +13,30 @@ import { PostsList } from '../components/postsList/PostsList';
 import { useObserver } from '../hooks/useObserver';
 
 export const PostsPage = () => {
-  const [posts, setPosts] = useState([]);
-  const [filter, setFilter] = useState({ sort: '', query: '' });
-  const [visible, setVisible] = useState(false)
-  const [totalPages, setTotalPages] = useState(0);
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(1)
+  const [posts, setPosts] = useState([]); // массив постов
+  const [filter, setFilter] = useState({ sort: '', query: '' }); //поля канфигурации сортировки + строка поиска
+  const [visible, setVisible] = useState(false); //флаг видимости мадального окна
+  const [totalPages, setTotalPages] = useState(0); //количество страниц в пагинации
+  const [limit, setLimit] = useState(10); // количество постов на странце
+  const [page, setPage] = useState(1); //текущая страница
 
-  const lastPost = useRef() 
+  const lastPost = useRef(); // элемент для обсервера
 
-  const sortedAndSearchedPosts = useSortedAndSearchedList(posts, filter.sort, filter.query)
+  const sortedAndSearchedPosts = useSortedAndSearchedList(posts, filter.sort, filter.query); //
+
   const [fetchPosts, isPostLoading, postError] = useFetching(async (limit, page) => {
     const response = await PostService.getAllPosts(limit, page);
-    setPosts([...posts,...response.data])
+    setPosts([...posts, ...response.data])
     const totalCount = response.headers["x-total-count"]
     setTotalPages(getPagesCount(totalCount, limit))
   })
   useObserver(lastPost, page < totalPages, isPostLoading, () => {
     setPage(page + 1);
-})
+  })
   useEffect(() => {
     fetchPosts(limit, page)
   }, [page, limit]);
-  
+
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -73,14 +74,15 @@ export const PostsPage = () => {
           <MyLoader />
         </div>
       }
-      
-      <MyPagination
+      {page >= totalPages 
+      ? null 
+      :<MyPagination
         page={page}
         setPage={setPage}
         changePage={changePage}
         totalPages={totalPages}
         limit={limit}
-        setLimit={setLimit} />
+        setLimit={setLimit} />}
     </div>
   );
 }

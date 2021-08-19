@@ -3,6 +3,7 @@ import { useParams } from "react-router"
 import { PostService } from "../API/PostService"
 import { MyLoader } from '../components/UI/myLoader/MyLoader'
 import { useFetching } from "../hooks/useFetching"
+import s from './PostIdPage.module.css'
 
 export const PostIdPage = () => {
     const params = useParams()
@@ -23,23 +24,24 @@ export const PostIdPage = () => {
     }, [])
 
     return (
-        <div>
+        <div className={s.wrapper}>
             {isLoading
                 ? <MyLoader />
-                : <div>
-                    <div>{post.id}. {post.title}</div>
-                    <div>{post.body}</div>
-                    <p>Коментарии:</p>
-                    <hr />
-                    {comments.map(el => {
-                        return (
-                            <div>
-                                <p>{el.email}</p>
-                                <p>{el.body}</p>
-                                <hr />
-                            </div>
-                        )
-                    })}
+                : <div className={s.post_item}>
+                    <div className={s.post_item__title}>{post.id}. {post.title}</div>
+                    <div className={s.post_item__body}>{post.body}</div>
+                    <div className={s.comments_wrapper}>
+                        <p>Коментарии:</p>
+                        {comments.map(el => {
+                            return (
+                                <div className={s.comments_item}>
+                                    <p className={s.comments_item__email}>{el.email}</p>
+                                    <p className={s.comments_item__body}>{el.body}</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+
                 </div>}
 
         </div>

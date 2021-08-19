@@ -1,7 +1,14 @@
 import { MySelect } from "../UI/mySelect/MySelect";
 import { MyInput } from "../UI/myInput/MyInput";
+import { PostService } from "../../API/PostService";
+import { useEffect } from "react";
 
 export const PostFilter = ({filter,setFilter}) => {
+
+  useEffect(() => {
+    PostService.getAllPosts(-1,1)
+  }, [filter.query]);
+
     return (
         <div>
         <MyInput

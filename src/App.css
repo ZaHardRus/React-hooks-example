@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 .App{
     width: 1200px;
@@ -53,16 +54,4 @@
     display: flex;
     justify-content: center;
     margin-top: 50px;
-}
-
-.navbar{
-    height: 50px;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-}
-
-.navbar__items{
-    margin-left: auto;
 }
