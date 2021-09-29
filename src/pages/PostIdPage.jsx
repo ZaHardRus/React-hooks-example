@@ -10,17 +10,18 @@ export const PostIdPage = () => {
     const [post, setPost] = useState({})
     const [comments, setComments] = useState([])
 
-    const [fetchPostById, isLoading, error] = useFetching(async (id) => {
+    const [fetchPostById, isLoading] = useFetching(async () => {
         const response = await PostService.getPost(params.id)
         setPost(response.data)
     })
-    const [fetchComments, isCommentsLoading, commentsError] = useFetching(async (id) => {
+    const [fetchComments] = useFetching(async () => {
         const response = await PostService.getCommentsByPost(params.id)
         setComments(response.data)
     })
     useEffect(() => {
         fetchPostById(params.id)
         fetchComments(params.id)
+        // eslint-disable-next-line
     }, [])
 
     return (

@@ -16,7 +16,6 @@ export const MyNavbar = () => {
         setIsAuth(false)
     }
 
-    const rootClass = ['navbar_list__item_link']
     return (
         <div className='navbar-wrapper'>
             <ul className='navbar_list'>

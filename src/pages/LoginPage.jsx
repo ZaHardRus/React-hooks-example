@@ -11,14 +11,14 @@ export const LoginPage = () => {
             login:e.target['login'].value,
             password:e.target['password'].value,
         }
-        if(result.login === 'root' && result.password == 'root'){
+        if(result.login === 'root' && result.password === 'root'){
             localStorage.setItem('auth','true')
             setIsAuth(true)
         }
     }
     return (
         <div>
-            <h1>LohinPage</h1>
+            <h1>Login Page</h1>
             <form onSubmit={submit}>
                 <MyInput name='login' type="text" placeholder='Введите логин' />
                 <MyInput name='password' type="password" placeholder='Введите пароль' />
