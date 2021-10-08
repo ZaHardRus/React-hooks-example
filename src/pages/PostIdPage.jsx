@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
-import { useParams } from "react-router"
-import { PostService } from "../API/PostService"
-import { MyLoader } from '../components/UI/myLoader/MyLoader'
-import { useFetching } from "../hooks/useFetching"
+import {useState, useEffect} from 'react'
+import {useParams} from "react-router"
+import {PostService} from "../API/PostService"
+import {MyLoader} from '../components/UI/myLoader/MyLoader'
+import {useFetching} from "../hooks/useFetching"
 import s from './PostIdPage.module.css'
+import {MyButton} from "../components/UI/myButton/MyButton";
+import {Link} from "react-router-dom";
 
 export const PostIdPage = () => {
     const params = useParams()
@@ -27,7 +29,7 @@ export const PostIdPage = () => {
     return (
         <div className={s.wrapper}>
             {isLoading
-                ? <MyLoader />
+                ? <MyLoader/>
                 : <div className={s.post_item}>
                     <div className={s.post_item__title}>{post.id}. {post.title}</div>
                     <div className={s.post_item__body}>{post.body}</div>
@@ -42,7 +44,7 @@ export const PostIdPage = () => {
                             )
                         })}
                     </div>
-
+                    <MyButton style={{marginTop:'20px'}}> <Link className={s.back} to={'/posts'}>Назад</Link> </MyButton>
                 </div>}
 
         </div>
