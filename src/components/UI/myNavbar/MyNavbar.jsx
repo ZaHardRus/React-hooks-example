@@ -18,7 +18,7 @@ export const MyNavbar = () => {
 
     return (
         <div className='navbar-wrapper'>
-            <ul className='navbar_list'>
+            <ul className='navbar_list App'>
                 <div>
                     <li className='navbar_list__item'><NavLink activeClassName = 'navbar_list__item_link active' className='navbar_list__item_link' to="/posts">Посты</NavLink></li>
                 </div>
