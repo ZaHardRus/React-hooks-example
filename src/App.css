@@ -60,3 +60,12 @@
     height: 100px;
     background-color: red;
 }
+.login-wrapper{
+    max-width: 600px;
+    margin: 100px auto;
+
+}
+.login-form{
+    display: flex;
+    flex-direction: column;
+}

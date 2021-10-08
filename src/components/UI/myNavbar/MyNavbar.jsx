@@ -19,9 +19,10 @@ export const MyNavbar = () => {
     return (
         <div className='navbar-wrapper'>
             <ul className='navbar_list'>
-                <li className='navbar_list__item'><NavLink activeClassName = 'navbar_list__item_link active'  className='navbar_list__item_link' to="/about">О Нас</NavLink></li>
-                <li className='navbar_list__item'><NavLink activeClassName = 'navbar_list__item_link active' className='navbar_list__item_link' to="/posts">Посты</NavLink></li>
-                <MyButton onClick={out}>Выйти</MyButton>
+                <div>
+                    <li className='navbar_list__item'><NavLink activeClassName = 'navbar_list__item_link active' className='navbar_list__item_link' to="/posts">Посты</NavLink></li>
+                </div>
+                <MyButton style={{color:"#fff", border:"1px solid #fff"}} onClick={out}>Выйти</MyButton>
             </ul>
             
         </div>

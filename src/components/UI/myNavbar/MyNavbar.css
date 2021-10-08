@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     padding: 20px 50px;
-    background-color: rgb(235, 227, 227);
+    background-color: #008080;
 }
 
 .navbar_list{
@@ -10,6 +10,11 @@
     width: 1200px;
     display: flex;
     gap: 30px;
+    justify-content: space-between;
+}
+.navbar_list div{
+    display: flex;
+    gap: 20px;
 }
 
 .navbar_list__item_link{
@@ -20,9 +25,13 @@
     transition: .3s;
 }
 .navbar_list__item_link:hover{
-    color: teal;
+    color: #fff;
     transform: scale(2);
 }
 .navbar_list__item_link.active{
     text-decoration:underline;
+}
+
+.logout{
+    color: #000;
 }

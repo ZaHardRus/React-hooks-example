@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef} from 'react'
-import {useSortedAndSearchedList} from '../hooks/useList'
+import {useSearchedList} from '../hooks/useList'
 import {PostForm} from "../components/postForm/PostForm";
 import {PostFilter} from "../components/postFilter/PostFilter";
 import {MyModal} from "../components/UI/myModal/MyModal";
@@ -14,7 +14,7 @@ import {useObserver} from '../hooks/useObserver';
 
 export const PostsPage = () => {
     const [posts, setPosts] = useState([]); // массив постов
-    const [filter, setFilter] = useState({sort: '', query: ''}); //поля канфигурации сортировки + строка поиска
+    const [filter, setFilter] = useState({sort: '', query: ''}); //поля: канфигурация сортировки + строка поиска
     const [visible, setVisible] = useState(false); //флаг видимости мадального окна
     const [totalPages, setTotalPages] = useState(0); //количество страниц в пагинации
     const [limit, setLimit] = useState(10); // количество постов на странце
@@ -22,7 +22,7 @@ export const PostsPage = () => {
 
     const lastPost = useRef(); // элемент для обсервера
 
-    const sortedAndSearchedPosts = useSortedAndSearchedList(posts, filter.sort, filter.query); //
+    const sortedAndSearchedPosts = useSearchedList(posts, filter.query); //
 
     const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
         const response = await PostService.getAllPosts(limit, page, filter.sort);
@@ -49,7 +49,7 @@ export const PostsPage = () => {
 
 
     const createPost = (newPost) => {
-        setPosts([...posts, newPost])
+        setPosts([newPost,...posts])
         setVisible(false)
     }
     const removePost = (post) => {
@@ -78,7 +78,7 @@ export const PostsPage = () => {
 
             {postError && <h2 style={{textAlign: 'center'}}>Произошла ошибка: {postError}</h2>}
             <PostsList removePost={removePost} posts={sortedAndSearchedPosts} title='Список постов №1'/>
-            <div ref={lastPost}></div>
+            <div ref={lastPost}/>
             {isPostLoading &&
             <div className='loaderWrapper'>
                 <MyLoader/>
