@@ -1,14 +1,18 @@
 import axios from 'axios'
 export class PostService {
-    static async getAllPosts(limit=20,page=1,sort='') {
+    static async getAllPosts(limit=10,page=1,sort='') {
+        let str;
+        if(page && sort){
+            str = `?_limit=${limit}&_page=${page}&_sort=${sort}`
+        }
+        if(page){
+            str = `?_limit=${limit}&_page=${page}`
+        }
+        if(sort){
+            str = `?_limit=${limit}&_sort=${sort}&_page=${page}`
+        }
         try {
-            const response = await axios.get(`https://jsonplaceholder.typicode.com/posts`,{
-                params:{
-                    _limit:limit,
-                    _page:page,
-                    _sort:sort,
-                }
-            })
+            const response = await axios.get(`https://jsonplaceholder.typicode.com/posts${str}`)
             return response
         } catch (e) {
             alert('Произошла ошибка при получении постов, попробуйте позже...')
