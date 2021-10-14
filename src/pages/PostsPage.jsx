@@ -40,11 +40,17 @@ export const PostsPage = () => {
     }, [page, limit]);
 
     useEffect(() => {
+        if(page !==1) {
+            setPage(1)
+        }
         fetchPosts(limit, 1, filter.sort)
         // eslint-disable-next-line
     }, [filter.sort]);
 
     useEffect(() => {
+        if(page !==1) {
+            setPage(1)
+        }
         if (searchTimeout !== false) {
             clearTimeout(searchTimeout)
         }
