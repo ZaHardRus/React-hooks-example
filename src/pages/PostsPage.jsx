@@ -1,5 +1,4 @@
 import {useState, useEffect, useRef} from 'react'
-import {useSearchedList} from '../hooks/useList'
 import {PostForm} from "../components/postForm/PostForm";
 import {PostFilter} from "../components/postFilter/PostFilter";
 import {MyModal} from "../components/UI/myModal/MyModal";
@@ -19,13 +18,11 @@ export const PostsPage = () => {
     const [totalPages, setTotalPages] = useState(0); //количество страниц в пагинации
     const [limit, setLimit] = useState(10); // количество постов на странце
     const [page, setPage] = useState(1); //текущая страница
-
+    const [searchTimeout, setSearchTimeout] = useState(0)//таймаут перед запросом на сервер
     const lastPost = useRef(); // элемент для обсервера
 
-    const sortedAndSearchedPosts = useSearchedList(posts, filter.query); //
-
     const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
-        const response = await PostService.getAllPosts(limit, page, filter.sort);
+        const response = await PostService.getAllPosts(limit, page, filter.sort, filter.query);
         if (page !== 1) {
             setPosts(prev => [...posts, ...response.data])
         } else {
@@ -38,18 +35,32 @@ export const PostsPage = () => {
         setPage(page + 1);
     })
     useEffect(() => {
-        fetchPosts(limit, page, filter.sort)
+        fetchPosts(limit, page, filter.sort, filter.query)
         // eslint-disable-next-line
     }, [page, limit]);
 
     useEffect(() => {
-        fetchPosts(10, 1, filter.sort)
+        fetchPosts(limit, 1, filter.sort)
         // eslint-disable-next-line
     }, [filter.sort]);
 
+    useEffect(() => {
+        if (searchTimeout !== false) {
+            clearTimeout(searchTimeout)
+        }
+        if (filter.query !== '') {
+            setSearchTimeout(setTimeout(() => {
+                fetchPosts(limit, 1, filter.sort, filter.query)
+            }, 1000))
+        } else {
+            fetchPosts(limit, 1, filter.sort, filter.query)
+        }
+        // eslint-disable-next-line
+    }, [filter.query]);
+
 
     const createPost = (newPost) => {
-        setPosts([newPost,...posts])
+        setPosts([newPost, ...posts])
         setVisible(false)
     }
     const removePost = (post) => {
@@ -74,10 +85,12 @@ export const PostsPage = () => {
             <PostFilter
                 filter={filter}
                 setFilter={setFilter}
+                posts={posts}
+                setPosts={setPosts}
             />
 
             {postError && <h2 style={{textAlign: 'center'}}>Произошла ошибка: {postError}</h2>}
-            <PostsList removePost={removePost} posts={sortedAndSearchedPosts} title='Список постов №1'/>
+            <PostsList removePost={removePost} posts={posts} title='Список постов №1'/>
             <div ref={lastPost}/>
             {isPostLoading &&
             <div className='loaderWrapper'>

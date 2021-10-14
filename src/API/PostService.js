@@ -1,16 +1,29 @@
 import axios from 'axios'
 export class PostService {
-    static async getAllPosts(limit=10,page=1,sort='') {
-        let str;
-        if(page && sort){
-            str = `?_limit=${limit}&_page=${page}&_sort=${sort}`
-        }
-        if(page){
-            str = `?_limit=${limit}&_page=${page}`
-        }
+    static async getAllPosts(limit=10,page=1,sort='',search='') {
+        console.log(limit,page,sort,search)
+        let str=`?_limit=${limit}&_page=${page}`;
         if(sort){
-            str = `?_limit=${limit}&_sort=${sort}&_page=${page}`
+            str+=`&_sort=${sort}`
         }
+        if(search){
+            str+=`&q=${search}`
+        }
+        // if(page && sort && search){
+        //     str = `?_limit=${limit}&_page=${page}&_sort=${sort}&q=${search}`
+        // }
+        // if(search && sort){
+        //     str = `?_limit=${limit}&_page=${page}&q=${search}&_sort=${sort}`
+        // }
+        // if(page){
+        //     str = `?_limit=${limit}&_page=${page}`
+        // }
+        // if(sort){
+        //     str = `?_limit=${limit}&_sort=${sort}&_page=${page}`
+        // }
+        // if(search){
+        //     str = `?_limit=${limit}&_page=${page}&q=${search}`
+        // }
         try {
             const response = await axios.get(`https://jsonplaceholder.typicode.com/posts${str}`)
             return response
